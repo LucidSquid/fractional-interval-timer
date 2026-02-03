@@ -8,7 +8,6 @@ let start;
 let loopCount;
 
 loadSavedInterval();
-console.log(timerInterval);
 setTimerText(timerInterval);
 
 timer.addEventListener("click", () => {
@@ -23,7 +22,7 @@ timer.addEventListener("click", () => {
     else if (input > 1_000_000)
         alert(input + " is too large. Max value is 1,000,000.");
     else {
-        timerInterval = +input;
+        setTimerInterval(+input);
         initializeTimerVars();
     }
     
@@ -51,20 +50,24 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (event.code === "KeyM") {
-        timerInterval = rewardsInterval;
+        setTimerInterval(rewardsInterval);
         initializeTimerVars();
         setTimerText(timerInterval);
     }
 });
 
+function setTimerInterval(value) {
+    timerInterval = value;
+    localStorage.setItem("savedInterval", value);
+}
+
 function loadSavedInterval() {
     if (localStorage.getItem("savedInterval"))
-        timerInterval = +localStorage.getItem("savedInterval");
+        setTimerInterval(+localStorage.getItem("savedInterval"));
 }
 
 function setTimerText(value) {
     timer.textContent = value.toFixed(3);
-    localStorage.setItem("savedInterval", value);
 }
 
 function setTimerActive() {
