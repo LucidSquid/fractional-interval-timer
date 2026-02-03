@@ -55,6 +55,7 @@ h3 {
 
 .timer {
     font-size: 2.5rem;
+    font-family: monospace;
     padding: 0.5rem 1rem;
     margin: 1rem;
     font-weight: 300;
@@ -81,7 +82,8 @@ button {
     background-color: transparent;
     transition:
         background-color 0.2s,
-        box-shadow 0.2s;
+        box-shadow 0.2s,
+        opacity 0.2s;
 }
 
 button:hover {
@@ -90,8 +92,13 @@ button:hover {
 
 button.active {
     color: var(--active-button);
+    border-color: var(--active-button);
     background-color: var(--active-button-bg);
-    border-color: var(--body-bg);
+    box-shadow: 0 0 0.5rem -0.05rem var(--active-button-bg);
+}
+
+button.active:hover {
+    opacity: 0.85;
 }
 
 button.active kbd {
@@ -126,6 +133,10 @@ kbd {
 
   h3 {
     margin: 0.25rem;
+  }
+
+  .timer {
+    font-size: 1.5rem;
   }
 
   kbd {
