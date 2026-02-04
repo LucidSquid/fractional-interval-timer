@@ -1,5 +1,8 @@
 const button = document.querySelector("button");
 const timer = document.querySelector(".timer");
+const audioContext = new AudioContext();
+const volume = audioContext.createGain();
+
 let timerActive = false;
 let timerInterval = 5;
 let rewardsInterval = 6.25;
@@ -87,6 +90,25 @@ function getLoopCount(timeElapsed) {
     return Math.floor(timeElapsed / timerInterval);
 }
 
+function playTone(seconds) {
+    const oscillator = audioContext.createOscillator();
+    oscillator.frequency.value = 440;
+
+    volume.connect(audioContext.destination);
+    oscillator.connect(volume);
+
+    // Fade in first 0.01s to volume 0.5
+    volume.gain.setValueAtTime(0, audioContext.currentTime);
+    volume.gain.linearRampToValueAtTime(0.5, audioContext.currentTime + 0.01);
+
+    // Fade out last 0.01s to volume 0
+    volume.gain.setValueAtTime(0.5, audioContext.currentTime + seconds - 0.01);
+    volume.gain.linearRampToValueAtTime(0, audioContext.currentTime + seconds);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + seconds);
+}
+
 setInterval(function() {
     if (timerActive) {
         let now = new Date().getTime();
@@ -98,13 +120,10 @@ setInterval(function() {
 
         if (loopCount < currentLoopCount) {
             loopCount = currentLoopCount;
+            playTone(0.075);
             console.log("Times looped: " + loopCount);
         }
 
         setTimerText(timerValue);
     }
 }, 8);
-
-function resetTimer() {
-
-}
