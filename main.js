@@ -120,7 +120,7 @@ function playTone(seconds) {
     oscillator.stop(audioContext.currentTime + seconds);
 }
 
-setInterval(function() {
+function updateTimer() {
     if (timerActive) {
         let now = new Date().getTime();
         let totalTimeElapsed = (now - start) / 1000;
@@ -142,4 +142,25 @@ setInterval(function() {
 
         setTimerText(timerValue);
     }
-}, 8);
+}
+
+const getFPS = () => 
+    new Promise(resolve =>
+        requestAnimationFrame(t1 =>
+            requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))
+    ));
+
+getFPS().then(fps => {
+    // 120 times per second
+    if (fps > 80) {
+        setInterval(function() {
+            updateTimer();
+        }, 8);
+    }
+    // 60 times per second
+    else {
+        setInterval(function() {
+            updateTimer();
+        }, 16);
+    }
+});
