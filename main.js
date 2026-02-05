@@ -48,8 +48,10 @@ button.addEventListener("click", () => {
         button.innerHTML = "Stop<kbd>Space</kbd";
         initializeTimerVars();
     }
-    else
+    else {
         button.innerHTML = "Start<kbd>Space</kbd";
+        resetTitle();
+    }
 });
 
 document.addEventListener("keydown", (event) => {
@@ -91,6 +93,7 @@ function initializeTimerVars() {
     start = new Date().getTime();
     timerValue = timerInterval;
     loopCount = 0;
+    resetTitle();
 }
 
 function resetProgressBar() {
@@ -120,6 +123,25 @@ function playTone(seconds) {
     oscillator.stop(audioContext.currentTime + seconds);
 }
 
+function resetTitle() {
+    document.title = "Fractional Interval Timer";
+}
+
+function setTitle(percent, loops, loopTimeElapsed) {
+    let title = "";
+
+    let totalBars = 8;
+    let filledBars = Math.min((Math.floor(percent / (100 / totalBars)) + 1), totalBars);
+
+    for (let i = 0; i < filledBars; i++)
+        title += "■";
+
+    for (let i = 0; i < totalBars - filledBars; i++)
+        title += "□";
+
+    document.title = title;
+}
+
 function updateTimer() {
     if (timerActive) {
         let now = new Date().getTime();
@@ -139,6 +161,7 @@ function updateTimer() {
             playTone(0.075);
             console.log("Times looped: " + loopCount);
         }
+        setTitle(loopProgress * 100, loopCount, loopTimeElapsed);
 
         setTimerText(timerValue);
     }
