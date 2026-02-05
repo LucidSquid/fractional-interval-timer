@@ -1,11 +1,12 @@
 const button = document.querySelector("button");
 const timer = document.querySelector(".timer");
+const root = document.documentElement;
 const audioContext = new AudioContext();
 const volume = audioContext.createGain();
 
 let timerActive = false;
 let timerInterval = 5;
-let rewardsInterval = 6.25;
+const rewardsInterval = 6.25;
 let timerValue;
 let start;
 let loopCount;
@@ -27,6 +28,7 @@ timer.addEventListener("click", () => {
     else {
         setTimerInterval(+input);
         initializeTimerVars();
+        resetProgressBar();
     }
     
     setTimerText(timerInterval);
@@ -37,11 +39,15 @@ button.addEventListener("click", () => {
 
     setTimerActive();
 
+    // Resume audio context to prevent first pop
+    if (audioContext.state !== "running") {
+        audioContext.resume();
+    }
+
     if (timerActive) {
         button.innerHTML = "Stop<kbd>Space</kbd";
         initializeTimerVars();
     }
-        
     else
         button.innerHTML = "Start<kbd>Space</kbd";
 });
@@ -56,6 +62,7 @@ document.addEventListener("keydown", (event) => {
         setTimerInterval(rewardsInterval);
         initializeTimerVars();
         setTimerText(timerInterval);
+        resetProgressBar();
     }
 });
 
@@ -86,6 +93,10 @@ function initializeTimerVars() {
     loopCount = 0;
 }
 
+function resetProgressBar() {
+    root.style.setProperty("--progress-bar-percent", "0%");
+}
+
 function getLoopCount(timeElapsed) {
     return Math.floor(timeElapsed / timerInterval);
 }
@@ -112,11 +123,16 @@ function playTone(seconds) {
 setInterval(function() {
     if (timerActive) {
         let now = new Date().getTime();
-        let timeElapsed = (now - start) / 1000;
+        let totalTimeElapsed = (now - start) / 1000;
+        let loopTimeElapsed = totalTimeElapsed % timerInterval;
+        let loopProgress = loopTimeElapsed / timerInterval;
+        let loopPercent = ((loopProgress * 100) / 2).toString() + "%";
 
-        timerValue = timerInterval - (timeElapsed % timerInterval);
+        root.style.setProperty("--progress-bar-percent", loopPercent); // 0% to max 50%
+
+        timerValue = timerInterval - loopTimeElapsed;
         
-        let currentLoopCount = getLoopCount(timeElapsed);
+        let currentLoopCount = getLoopCount(totalTimeElapsed);
 
         if (loopCount < currentLoopCount) {
             loopCount = currentLoopCount;

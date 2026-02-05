@@ -5,10 +5,12 @@
     --text-color: #001933;
     --container-bg: #CCE5FF;
     --body-bg: #B3D9FF;
-    --timer-hover: hsl(211, 100%, 85%);
+    --timer-hover: hsl(211, 100%, 86%);
     --active-button: hsl(0, 0%, 95%);
-    --active-button-bg: hsl(210, 100%, 70%);
-    --progress-bar: #2DC653;
+    --active-button-bg: #4CA6FF;
+    --progress-bar-color: #007FFF;
+    --progress-bar-percent: 0%; /* From 0% to 50% max at top */
+    --progress-bar-width: 0.5rem;
 }
 
 * {
@@ -29,14 +31,34 @@ body {
 
 .container {
     background-color: var(--container-bg);
-    width: 62vw;
-    height: 62vh;
+    width: calc(62vw - 2 * var(--progress-bar-width));
+    height: calc(62vh - 2 * var(--progress-bar-width));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 0.5rem;
-    box-shadow: 0 0 1rem -0.25rem;
+    position: relative;
+}
+
+.container::after, .container::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: var(--container-bg);
+  background-image: conic-gradient(from 180deg,
+                      var(--progress-bar-color) var(--progress-bar-percent), /* Left half of bar */
+                      transparent var(--progress-bar-percent) calc(100% - var(--progress-bar-percent)),
+                      var(--progress-bar-color) calc(100% - var(--progress-bar-percent))); /* Right half of bar */
+  z-index: -1;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem -0.25rem;
+  padding: var(--progress-bar-width);
+}
+
+.container::before {
+  filter: blur(0.5rem);
 }
 
 h1 {
@@ -115,23 +137,27 @@ kbd {
   border: 1px solid var(--text-color);
 }
 
-/* Change font size for mobile devices */
+/* Change layout for mobile devices */
 @media screen and (max-width: 600px) {
   html {
-    font-size: 24px;
+    font-size: 24px; 
   }
 
   .container {
-    width: 100vw;
-    height: 100vh;
+    width: calc(100vw - 2 * var(--progress-bar-width));
+    height: calc(100vh - 2 * var(--progress-bar-width));
+  }
+
+  .container::after {
     border-radius: 0;
   }
 
   h1 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   h3 {
+    font-size: 0.75rem;
     margin: 0.25rem;
   }
 
