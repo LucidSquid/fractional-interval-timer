@@ -6,7 +6,7 @@ const volume = audioContext.createGain();
 
 let timerActive = false;
 let timerInterval = 5;
-const rewardsInterval = 6.25;
+const rewardsInterval = 6.5;
 let timerValue;
 let start;
 let loopCount;
