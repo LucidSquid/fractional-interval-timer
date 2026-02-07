@@ -5,7 +5,7 @@
     --text-color: #001933;
     --container-bg: #CCE5FF;
     --body-bg: #B3D9FF;
-    --timer-hover: hsl(211, 100%, 86%);
+    --timer-hover: hsl(211, 100%, 86%, 0.75);
     --timer-hover-shadow: hsl(211, 100%, 66%);
     --active-button: hsl(0, 0%, 95%);
     --active-button-bg: #4CA6FF;
