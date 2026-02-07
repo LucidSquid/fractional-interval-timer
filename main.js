@@ -165,6 +165,8 @@ function updateTimer() {
 
         setTimerText(timerValue);
     }
+
+    // logFPS();
 }
 
 const getFPS = () => 
@@ -187,3 +189,7 @@ getFPS().then(fps => {
         }, 16);
     }
 });
+
+function logFPS() {
+    getFPS().then(fps => {console.log(fps)});
+}

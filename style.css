@@ -152,6 +152,10 @@ kbd {
     border-radius: 0;
   }
 
+  .container::before {
+    display: none;
+  }
+
   h1 {
     font-size: 1.5rem;
   }
@@ -163,6 +167,18 @@ kbd {
 
   .timer {
     font-size: 1.5rem;
+  }
+
+  button {
+    box-shadow: 0 0 0.25rem -0.05rem gray;
+  }
+
+  button:hover {
+    box-shadow: 0 0 0.25rem -0.05rem gray;
+  }
+
+  button.active {
+    box-shadow: 0 0 0.5rem -0.05rem var(--active-button-bg);
   }
 
   kbd {
