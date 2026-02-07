@@ -6,6 +6,7 @@
     --container-bg: #CCE5FF;
     --body-bg: #B3D9FF;
     --timer-hover: hsl(211, 100%, 86%);
+    --timer-hover-shadow: hsl(211, 100%, 66%);
     --active-button: hsl(0, 0%, 95%);
     --active-button-bg: #4CA6FF;
     --progress-bar-color: #007FFF;
@@ -84,12 +85,14 @@ h3 {
     border-radius: 1rem;
     transition:
         opacity 0.2s,
-        background-color 0.2s;
+        background-color 0.2s,
+        box-shadow 0.2s;
 }
 
 .timer:hover {
-    opacity: 0.75;
+    opacity: 0.9;
     background-color: var(--timer-hover);
+    box-shadow: 0 0 0.5rem -0.05rem var(--timer-hover-shadow);
 }
 
 button {
